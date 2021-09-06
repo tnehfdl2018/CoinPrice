@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="coinExchange">
+        <item>COINONE</item>
+        <item>MEXC</item>
+        <item>BITHUMB</item>
+        <item>UPBIT</item>
+        <item>BINANCE</item>
+        <item>HUOBI</item>
+        <item>GATE.IO</item>
+    </string-array>
+
+
+</resources>
