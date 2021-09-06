@@ -45,39 +45,71 @@
         android:layout_marginEnd="20dp"
         app:layout_constraintTop_toBottomOf="@+id/constToolbar">
 
-        <Spinner
-            android:id="@+id/spnSelectExchange"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/spinner_bg"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/spnSelectCoin"/>
-
-        <Spinner
-            android:id="@+id/spnSelectCoin"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearSpinner"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/spinner_bg"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/spnSelectExchange"
-            app:layout_constraintEnd_toStartOf="@+id/imgSearchCoinData"/>
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imgSearchCoinData">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constSelectExchange"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1">
+
+                <Spinner
+                    android:id="@+id/spnSelectExchange"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/spinner_bg"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/spnSelectExchange"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constSelectCoin"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <Spinner
+                    android:id="@+id/spnSelectCoin"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/spinner_bg"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/spnSelectCoin"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/imgSearchCoinData"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_baseline_search_24"
+            android:src="@drawable/ic_baseline_add_24"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/spnSelectCoin"
             app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
