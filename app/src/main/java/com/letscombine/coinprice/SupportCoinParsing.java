@@ -68,7 +68,8 @@ public class SupportCoinParsing {
                         for (int dInx = 0; dInx < parsingArray.length(); dInx++) {
                             parsingObject = new JSONObject(parsingArray.getString(dInx));
                             if (exchangeIndex == 4) {
-                                parsingDataList.add(parsingObject.getString(StringDefine.MARKET).replace('-', '/'));
+                                String[] coinDetail = parsingObject.getString(StringDefine.MARKET).split("-");
+                                parsingDataList.add(coinDetail[1] + "/" + coinDetail[0]);
                             } else {
                                 parsingDataList.add(parsingObject.getString(StringDefine.ID).replace('_', '/'));
                             }
