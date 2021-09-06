@@ -1,6 +1,7 @@
 package com.letscombine.coinprice;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -32,8 +33,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Spinner spnSelectExchange = null;
     private Spinner spnSelectCoin = null;
 
-    //    private RecyclerView recyclerViewGetRequestData = null;
-    private TextView recyclerViewGetRequestData = null;
+    private RecyclerView recyclerViewGetRequestData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
