@@ -71,81 +71,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
      * @param selectExchange
      */
     private void callApi(String selectExchange) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                CallApiThread searchThread = new CallApiThread();
-                if (!TextUtils.isEmpty(selectExchange)) {
-                    searchThread.setSelectExchange(selectExchange);
-                } else {
-                    return;
-                }
-                searchThread.start();
-                if (!TextUtils.isEmpty(returnData)) {
-//                    parsingData();
-                    recyclerViewGetRequestData.setText(returnData);
-                } else {
-                    recyclerViewGetRequestData.setText("데이터 없음");
-                }
-            }
-        });
+        CallApiThread searchThread = new CallApiThread();
+        if (!TextUtils.isEmpty(selectExchange)) {
+            searchThread.setSelectExchange(selectExchange);
+        } else {
+            return;
+        }
+        searchThread.start();
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                CallApiThread searchThread = new CallApiThread();
+//                if (!TextUtils.isEmpty(selectExchange)) {
+//                    searchThread.setSelectExchange(selectExchange);
+//                } else {
+//                    return;
+//                }
+//                searchThread.start();
+//            }
+//        });
     }
-
-//    private void parsingData(String data, int exchangeIndex) {
-//        ArrayList<String> arrayList = new ArrayList<>();
-//        JSONObject dataObject = null;
-//
-//        if (!TextUtils.isEmpty(data)) {
-//            try {
-//                JSONObject jsonObject = new JSONObject(data);
-//
-//                JSONArray jsonArray = (JSONArray) jsonObject.get("data");
-//
-//                for (int i = 0; i < jsonArray.length(); i++) {
-//                    Log.e("데이터", jsonArray.getString(i));
-
-//                    dataObject = new JSONObject(jsonArray.getString(i));
-//                    arrayList.add(dataObject.getString("symbol").replace('_', '/'));
-//                    Log.e("데이터", arrayList.get(i));
-//                }
-//
-//                ArrayAdapter adapter = new ArrayAdapter(mContext, R.layout.support_simple_spinner_dropdown_item, arrayList);
-//                Spinner spnSelectCoin = findViewById(R.id.spnSelectCoin);
-//                spnSelectCoin.setAdapter(adapter);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-
-
-            // json 파싱
-//            try {
-//                Gson gson = new Gson();
-//                gson.
-//
-//
-//
-//                JSONParser jsonParser = new JSONParser();
-//                JSONObject jsonObject = (JSONObject) jsonParser.parse(returnData);
-//                JSONObject jsonObject = new JSONObject(returnData);
-//                String asdf = String.valueOf(jsonObject.getJSONObject("data"));
-//                Log.e("data : ", asdf);
-//
-//                JSONArray jsonArray = jsonObject.getJSONArray("data");
-//
-//                for (int dInx = 0; dInx < jsonArray.length(); dInx++) {
-//                    arrayList.add(jsonArray.getString(dInx));
-//                    Log.e("데이터", arrayList.get(dInx));
-//                }
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-
-//        } else {
-//
-//        }
-//
-//    }
 
     /**
      * 스피너 선택 시 동작
