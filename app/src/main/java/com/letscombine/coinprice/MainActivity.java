@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,9 +29,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private Utils utils = null;
     private Context mContext = null;
-    private String returnData = null;
+    private Spinner spnSelectExchange = null;
+    private Spinner spnSelectCoin = null;
 
-//    private RecyclerView recyclerViewGetRequestData = null;
+    //    private RecyclerView recyclerViewGetRequestData = null;
     private TextView recyclerViewGetRequestData = null;
 
     @Override
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // 스피너 세팅
         setSpinner();
         ImageView imgSearchCoinData = findViewById(R.id.imgSearchCoinData);
+        imgSearchCoinData.setOnClickListener(onClickListener);
         recyclerViewGetRequestData = findViewById(R.id.recyclerViewGetRequestData);
     }
 
@@ -56,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
      * 스피너 설정
      */
     private void setSpinner() {
-        Spinner spnSelectExchange = findViewById(R.id.spnSelectExchange);
-        Spinner spnSelectCoin = findViewById(R.id.spnSelectCoin);
+        spnSelectExchange = findViewById(R.id.spnSelectExchange);
+        spnSelectCoin = findViewById(R.id.spnSelectCoin);
         spnSelectExchange.setOnItemSelectedListener(this);
         spnSelectCoin.setOnItemSelectedListener(this);
 
@@ -78,18 +81,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             return;
         }
         searchThread.start();
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                CallApiThread searchThread = new CallApiThread();
-//                if (!TextUtils.isEmpty(selectExchange)) {
-//                    searchThread.setSelectExchange(selectExchange);
-//                } else {
-//                    return;
-//                }
-//                searchThread.start();
-//            }
-//        });
     }
 
     /**
@@ -104,9 +95,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         switch (parent.getId()) {
             // 거래소 선택 시 동작
             case R.id.spnSelectExchange:
-//                sSelectExchange = (String) parent.getItemAtPosition(position);
                 callApi((String) parent.getItemAtPosition(position));
-                Toast.makeText(mContext, (String) parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
                 break;
             // 코인 선택 시 동작
             case R.id.spnSelectCoin:
@@ -119,68 +108,128 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     /**
+     * onClickListener
+     * imgSearchCoinData -> 선택한 항목 추가
+     */
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.imgSearchCoinData:
+                    String selectExchange = (String) spnSelectExchange.getSelectedItem();
+                    String selectCoin = (String) spnSelectCoin.getSelectedItem();
+                    CallApiThread callApiThread = new CallApiThread();
+                    callApiThread.setCoinDetail(selectExchange, selectCoin, false);
+                    callApiThread.start();
+                    Toast.makeText(mContext, selectExchange + ", " + selectCoin, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+
+    /**
      * 네트워크 통신용 thread 작성
      */
     public class CallApiThread extends Thread {
         // 선택한 코인
         private String sSelectExchange = null;
-        private String responseData = null;
+        private String sSelectCoin = null;
         private ArrayList<String> coinList = new ArrayList<>();
+        private HashMap<String, String> coinDetail = new HashMap<>();
+        private Boolean callApiKinds = true;
 
         // 선택한 코인 세팅
         private void setSelectExchange(String exchange) {
             sSelectExchange = exchange;
         }
 
+        // 추가 버튼 클릭 시 검색을 위한 데이터 세팅
+        private void setCoinDetail(String sSelectExchange, String sSelectCoin, Boolean callApiKinds) {
+            this.sSelectExchange = sSelectExchange;
+            this.sSelectCoin = sSelectCoin;
+            this.callApiKinds = callApiKinds;
+        }
+
+        
         @Override
         public void run() {
             super.run();
             utils = new Utils();
             HashMap<String, String> hashMap = new HashMap<>();
-            String url = null;
-            switch (sSelectExchange) {
-                case StringDefine.COINONE:
-//                    url = AddressDefine.COINONE_ALL_COIN;
-                    coinList = SupportCoinParsing.parsingData(utils.callOkHttp(AddressDefine.COINONE_ALL_COIN, hashMap), 1);
-                    break;
-                case StringDefine.MEXC:
-//                    url = AddressDefine.MEXC_ALL_COIN;
-                    coinList = SupportCoinParsing.parsingData(utils.callOkHttp(AddressDefine.MEXC_ALL_COIN, hashMap), 2);
-                    break;
-                case StringDefine.BITHUMB:
-//                    url = AddressDefine.BITHUMB_ALL_COIN;
-                    coinList = SupportCoinParsing.parsingData(utils.callOkHttp(AddressDefine.BITHUMB_ALL_COIN, hashMap), 3);
-                    break;
-                case StringDefine.UPBIT:
-//                    url = AddressDefine.UPBIT_ALL_COIN;
-                    coinList = SupportCoinParsing.parsingData(utils.callOkHttp(AddressDefine.UPBIT_ALL_COIN, hashMap), 4);
-                    break;
-                case StringDefine.BINANCE:
-//                    url = AddressDefine.BINANCE_ALL_COIN;
-                    coinList = SupportCoinParsing.parsingData(utils.callOkHttp(AddressDefine.BINANCE_ALL_COIN, hashMap), 5);
-                    break;
-                case StringDefine.HUOBI:
-//                    url = AddressDefine.HUOBI_ALL_COIN;
-                    coinList = SupportCoinParsing.parsingData(utils.callOkHttp(AddressDefine.HUOBI_ALL_COIN, hashMap), 6);
-                    break;
-                case StringDefine.GATEIO:
-//                    url = AddressDefine.GATEIO_ALL_COIN;
-                    coinList = SupportCoinParsing.parsingData(utils.callOkHttp(AddressDefine.GATEIO_ALL_COIN, hashMap), 7);
-                    break;
-            }
-
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    // 파싱 데이터가 존재 할 시 spinner에 담는다.
-                    if (coinList != null) {
-                        ArrayAdapter adapter = new ArrayAdapter(mContext, R.layout.support_simple_spinner_dropdown_item, coinList);
-                        Spinner spnSelectCoin = findViewById(R.id.spnSelectCoin);
-                        spnSelectCoin.setAdapter(adapter);
-                    }
+            if (callApiKinds) {
+                // 코인 리스트 조회
+                switch (sSelectExchange) {
+                    case StringDefine.COINONE:
+                        coinList = SupportCoinParsing.parsingCoinList(utils.callOkHttp(AddressDefine.COINONE_ALL_COIN, hashMap), 1);
+                        break;
+                    case StringDefine.MEXC:
+                        coinList = SupportCoinParsing.parsingCoinList(utils.callOkHttp(AddressDefine.MEXC_ALL_COIN, hashMap), 2);
+                        break;
+                    case StringDefine.BITHUMB:
+                        coinList = SupportCoinParsing.parsingCoinList(utils.callOkHttp(AddressDefine.BITHUMB_ALL_COIN, hashMap), 3);
+                        break;
+                    case StringDefine.UPBIT:
+                        coinList = SupportCoinParsing.parsingCoinList(utils.callOkHttp(AddressDefine.UPBIT_ALL_COIN, hashMap), 4);
+                        break;
+                    case StringDefine.BINANCE:
+                        coinList = SupportCoinParsing.parsingCoinList(utils.callOkHttp(AddressDefine.BINANCE_ALL_COIN, hashMap), 5);
+                        break;
+                    case StringDefine.HUOBI:
+                        coinList = SupportCoinParsing.parsingCoinList(utils.callOkHttp(AddressDefine.HUOBI_ALL_COIN, hashMap), 6);
+                        break;
+                    case StringDefine.GATEIO:
+                        coinList = SupportCoinParsing.parsingCoinList(utils.callOkHttp(AddressDefine.GATEIO_ALL_COIN, hashMap), 7);
+                        break;
                 }
-            });
+                // 통신 후 결과값을 코인명을 담는 spinner에 추가
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 파싱 데이터가 존재 할 시 spinner에 담는다.
+                        if (coinList != null) {
+                            ArrayAdapter adapter = new ArrayAdapter(mContext, R.layout.support_simple_spinner_dropdown_item, coinList);
+                            Spinner spnSelectCoin = findViewById(R.id.spnSelectCoin);
+                            spnSelectCoin.setAdapter(adapter);
+                        }
+                    }
+                });
+
+            } else {
+                // 코인 상세 조회
+                switch (sSelectExchange) {
+                    case StringDefine.COINONE:
+                        String[] coinName = sSelectCoin.split("/");
+                        hashMap.put(StringDefine.CURRENCY, coinName[0]);
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(utils.callOkHttp(AddressDefine.COINONE_COIN_DETAIL, hashMap));
+                        break;
+                    case StringDefine.MEXC:
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(utils.callOkHttp(AddressDefine.MEXC_COIN_DETAIL, hashMap));
+                        break;
+                    case StringDefine.BITHUMB:
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(utils.callOkHttp(AddressDefine.BITHUMB_COIN_DETAIL, hashMap));
+                        break;
+                    case StringDefine.UPBIT:
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(utils.callOkHttp(AddressDefine.UPBIT_COIN_DETAIL, hashMap));
+                        break;
+                    case StringDefine.BINANCE:
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(utils.callOkHttp(AddressDefine.BINANCE_COIN_DETAIL, hashMap));
+                        break;
+                    case StringDefine.HUOBI:
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(utils.callOkHttp(AddressDefine.HUOBI_COIN_DETAIL, hashMap));
+                        break;
+                    case StringDefine.GATEIO:
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(utils.callOkHttp(AddressDefine.GATEIO_COIN_DETAIL, hashMap));
+                        break;
+                }
+
+                // recyclerView에 업데이트
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        
+                    }
+                });
+            }
         }
     }
 }

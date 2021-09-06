@@ -12,7 +12,7 @@ public class AddressDefine {
     public static final String GATEIO_ALL_COIN = "https://api.gateio.ws/api/v4/spot/currency_pairs";
 
     // 각 코인 상세 조회
-    public static String COINONE_COIN_DETAIL = "https://api.coinone.co.kr/ticker?currency=";
+    public static String COINONE_COIN_DETAIL = "https://api.coinone.co.kr/ticker";
     public static String BITHUMB_COIN_DETAIL = "https://api.bithumb.com/public/ticker/";
     public static String MEXC_COIN_DETAIL = "https://www.mexc.com/open/api/v2/market/ticker";
     public static String UPBIT_COIN_DETAIL = "https://api.upbit.com/v1/ticker?markets=";

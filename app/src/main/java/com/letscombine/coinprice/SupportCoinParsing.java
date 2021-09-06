@@ -10,11 +10,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class SupportCoinParsing {
 
-    public static ArrayList<String> parsingData(String data, int exchangeIndex) {
+    public static ArrayList<String> parsingCoinList(String data, int exchangeIndex) {
         ArrayList<String> parsingDataList = new ArrayList<>();
         JSONObject nonParsingObject = null;
         JSONObject parsingObject = null;
@@ -85,6 +87,7 @@ public class SupportCoinParsing {
                         }
                         break;
                 }
+                Collections.sort(parsingDataList);
                 return parsingDataList;
 
             } else {
@@ -94,5 +97,22 @@ public class SupportCoinParsing {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static HashMap<String, String> parsingCoinDetail(String data) {
+        HashMap<String, String> coinDetail = new HashMap<>();
+        try {
+            JSONObject coinJson = new JSONObject(data);
+
+            String coinCurrency = coinJson.getString(StringDefine.CURRENCY);
+            String coinLastPrice = coinJson.getString(StringDefine.LAST);
+            String coinVolume = coinJson.getString(StringDefine.VOLUME);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return coinDetail;
     }
 }
