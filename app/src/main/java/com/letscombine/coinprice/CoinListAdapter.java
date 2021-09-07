@@ -25,17 +25,20 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(CoinListAdapter.ViewHolder holder, int position) {
-        holder.txtExchange.setText(coinListArray.get(position).getCoinExchange());
-        holder.txtCoinName.setText(coinListArray.get(position).getCoinName());
-        holder.txtPresentPrice.setText(coinListArray.get(position).getCoinPrice());
+        if (coinListArray != null) {
+            holder.txtExchange.setText(coinListArray.get(position).getCoinExchange());
+            holder.txtCoinName.setText(coinListArray.get(position).getCoinName());
+            holder.txtPresentPrice.setText(coinListArray.get(position).getCoinPrice());
 
-        // 거래대금이 백만이상이면 백만자리 아래를 절사하고 "백만"으로 표기
-        if (coinListArray.get(position).getCoinTransactionAmount().length() > 6) {
-            coinListArray.get(position).setCoinTransactionAmount(coinListArray.get(position).getCoinTransactionAmount().substring(0, coinListArray.get(position).getCoinTransactionAmount().length()-6) + StringDefine.TRANSACTION_PRICE_KOR);
+            // 거래대금이 백만이상이면 백만자리 아래를 절사하고 "백만"으로 표기
+            if (coinListArray.get(position).getCoinTransactionAmount().length() > 6) {
+                coinListArray.get(position).setCoinTransactionAmount(coinListArray.get(position).getCoinTransactionAmount().substring(0, coinListArray.get(position).getCoinTransactionAmount().length() - 6) + StringDefine.TRANSACTION_PRICE_KOR);
+            }
+
+            holder.txtVolume.setText(coinListArray.get(position).getCoinTransactionAmount());
+        } else {
+            Toast.makeText(holder.itemView.getContext(), "뭔가 잘못 됬음", Toast.LENGTH_SHORT).show();
         }
-
-        holder.txtVolume.setText(coinListArray.get(position).getCoinTransactionAmount());
-
     }
 
     @Override

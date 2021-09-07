@@ -107,6 +107,8 @@ public class SupportCoinParsing {
         String coinTransactionAmount = null;
         BigDecimal bCoinPrice = null;
         BigDecimal bCoinTransactionAmount = null;
+        JSONArray parsingArray = null;
+        int iCoinTransactionAmount = 0;
         if (data != null) {
             try {
                 JSONObject coinJson = new JSONObject(data);
@@ -117,12 +119,21 @@ public class SupportCoinParsing {
 
                         bCoinPrice = new BigDecimal(coinJson.getString(StringDefine.LAST));
                         bCoinTransactionAmount = bCoinPrice.multiply(new BigDecimal(coinJson.getString(StringDefine.VOLUME)));
-                        int iCoinTransactionAmount = bCoinTransactionAmount.intValue();
+                        iCoinTransactionAmount = bCoinTransactionAmount.intValue();
 
                         return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), String.valueOf(iCoinTransactionAmount));
                     case StringDefine.MEXC: // mexc
+                        parsingArray = (JSONArray) coinJson.get(StringDefine.DATA);
+                        for (int dInx = 0; dInx < parsingArray.length(); dInx++) {
+                            parsingObject = new JSONObject(parsingArray.getString(dInx));
 
-                        return null;
+                            if (selectCoin.equals(parsingObject.getString(StringDefine.SYMBOL).replace("_", "/"))) {
+                                bCoinPrice = new BigDecimal(parsingObject.getString(StringDefine.LAST));
+                                bCoinTransactionAmount = bCoinPrice.multiply(new BigDecimal(parsingObject.getString(StringDefine.VOLUME)));
+                                iCoinTransactionAmount = bCoinTransactionAmount.intValue();
+                                return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), String.valueOf(iCoinTransactionAmount));
+                            }
+                        }
                     case StringDefine.BITHUMB: // bithumb
                         return null;
                     case StringDefine.UPBIT: // upbit
