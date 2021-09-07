@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         private String sSelectExchange = null;
         private String sSelectCoin = null;
         private ArrayList<String> coinList = new ArrayList<>();
-//        private ArrayList<CoinDetailVO> coinDetail = new ArrayList<>();
         private CoinDetailVO coinDetail = null;
         private Boolean callApiKinds = true;
 
@@ -154,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             this.callApiKinds = callApiKinds;
         }
 
-        
         @Override
         public void run() {
             super.run();
@@ -185,19 +183,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         coinList = SupportCoinParsing.parsingCoinList(utils.callOkHttp(AddressDefine.GATEIO_ALL_COIN, hashMap), 7);
                         break;
                 }
-                // 통신 후 결과값을 코인명을 담는 spinner에 추가
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // 파싱 데이터가 존재 할 시 spinner에 담는다.
-                        if (coinList != null) {
-                            ArrayAdapter adapter = new ArrayAdapter(mContext, R.layout.support_simple_spinner_dropdown_item, coinList);
-                            Spinner spnSelectCoin = findViewById(R.id.spnSelectCoin);
-                            spnSelectCoin.setAdapter(adapter);
-                        }
-                    }
-                });
-
             } else {
                 // 코인 상세 조회
                 String[] searchCoin = null;
@@ -231,19 +216,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.GATEIO, utils.callOkHttp(AddressDefine.GATEIO_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                 }
-
-                // recyclerView에 업데이트
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
+            }
+            // 통신 후 결과값을 코인명을 담는 spinner에 추가
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // 파싱 데이터가 존재 할 시 spinner에 담는다.
+                    if (callApiKinds) {
+                        if (coinList != null) {
+                            ArrayAdapter adapter = new ArrayAdapter(mContext, R.layout.support_simple_spinner_dropdown_item, coinList);
+                            Spinner spnSelectCoin = findViewById(R.id.spnSelectCoin);
+                            spnSelectCoin.setAdapter(adapter);
+                        }
+                    } else {
+                        // recyclerView에 업데이트
                         coinListAdapter.setItem(coinDetail);
 
                         recyclerViewGetRequestData.setLayoutManager(new LinearLayoutManager(mContext));
                         recyclerViewGetRequestData.setAdapter(coinListAdapter);
                     }
-                });
-            }
+                }
+            });
+
             callApiKinds = true;
         }
     }
