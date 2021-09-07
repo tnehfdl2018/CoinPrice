@@ -26,7 +26,12 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ViewHo
         holder.txtExchange.setText(coinListArray.get(position).getCoinExchange());
         holder.txtCoinName.setText(coinListArray.get(position).getCoinName());
         holder.txtPresentPrice.setText(coinListArray.get(position).getCoinPrice());
-        holder.txtVolume.setText(coinListArray.get(position).getCoinVolume());
+
+        if (coinListArray.get(position).getCoinTransactionAmount().length() > 6) {
+            coinListArray.get(position).setCoinTransactionAmount(coinListArray.get(position).getCoinTransactionAmount().substring(0, coinListArray.get(position).getCoinTransactionAmount().length()-6) + "백만");
+        }
+
+        holder.txtVolume.setText(coinListArray.get(position).getCoinTransactionAmount());
 
     }
 

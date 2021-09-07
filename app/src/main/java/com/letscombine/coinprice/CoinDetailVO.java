@@ -5,14 +5,14 @@ public class CoinDetailVO {
     private String coinExchange;
     private String coinName;
     private String coinPrice;
-    private String coinVolume;
+    private String coinTransactionAmount;
 
 
-    public CoinDetailVO(String coinExchange, String coinName, String coinPrice, String coinVolume) {
+    public CoinDetailVO(String coinExchange, String coinName, String coinPrice, String coinTransactionAmount) {
         this.coinExchange = coinExchange;
         this.coinName = coinName;
         this.coinPrice = coinPrice;
-        this.coinVolume = coinVolume;
+        this.coinTransactionAmount = coinTransactionAmount;
     }
 
     public String getCoinExchange() {
@@ -39,11 +39,11 @@ public class CoinDetailVO {
         this.coinPrice = coinPrice;
     }
 
-    public String getCoinVolume() {
-        return coinVolume;
+    public String getCoinTransactionAmount() {
+        return coinTransactionAmount;
     }
 
-    public void setCoinVolume(String coinVolume) {
-        this.coinVolume = coinVolume;
+    public void setCoinTransactionAmount(String coinTransactionAmount) {
+        this.coinTransactionAmount = coinTransactionAmount;
     }
 }
