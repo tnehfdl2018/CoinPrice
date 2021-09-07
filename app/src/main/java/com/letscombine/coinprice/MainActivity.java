@@ -219,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BINANCE, utils.callOkHttp(AddressDefine.BINANCE_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.HUOBI:
+                        hashMap.put(StringDefine.SYMBOL.toLowerCase(), sSelectCoin.replace("/", "").toLowerCase());
                         coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.HUOBI, utils.callOkHttp(AddressDefine.HUOBI_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.GATEIO:

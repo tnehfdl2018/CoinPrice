@@ -150,10 +150,13 @@ public class SupportCoinParsing {
                                 return new CoinDetailVO(exchange, selectCoin, coinPrice, coinTransactionAmount);
                             }
                         }
-
                         return null;
                     case StringDefine.HUOBI: // huobi
-                        return null;
+                        JSONObject tickJsonObject = coinJson.getJSONObject(StringDefine.TICK);
+                        bCoinPrice = new BigDecimal(tickJsonObject.getString(StringDefine.CLOSE));
+                        bCoinTransactionAmount = bCoinPrice.multiply(new BigDecimal(tickJsonObject.getString(StringDefine.AMOUNT)));
+                        iCoinTransactionAmount = bCoinTransactionAmount.intValue();
+                        return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), String.valueOf(iCoinTransactionAmount));
                     case StringDefine.GATEIO: // gate/io
                         return null;
                     default:
