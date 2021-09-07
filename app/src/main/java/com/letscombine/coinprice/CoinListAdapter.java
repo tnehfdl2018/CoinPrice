@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.letscombine.coinprice.define.StringDefine;
+
 import java.util.ArrayList;
 
 public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ViewHolder> {
@@ -27,8 +29,9 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ViewHo
         holder.txtCoinName.setText(coinListArray.get(position).getCoinName());
         holder.txtPresentPrice.setText(coinListArray.get(position).getCoinPrice());
 
+        // 거래대금이 백만이상이면 백만자리 아래를 절사하고 "백만"으로 표기
         if (coinListArray.get(position).getCoinTransactionAmount().length() > 6) {
-            coinListArray.get(position).setCoinTransactionAmount(coinListArray.get(position).getCoinTransactionAmount().substring(0, coinListArray.get(position).getCoinTransactionAmount().length()-6) + "백만");
+            coinListArray.get(position).setCoinTransactionAmount(coinListArray.get(position).getCoinTransactionAmount().substring(0, coinListArray.get(position).getCoinTransactionAmount().length()-6) + StringDefine.TRANSACTION_PRICE_KOR);
         }
 
         holder.txtVolume.setText(coinListArray.get(position).getCoinTransactionAmount());

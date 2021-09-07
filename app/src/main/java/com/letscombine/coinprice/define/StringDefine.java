@@ -30,4 +30,5 @@ public class StringDefine {
     public static final String LAST = "last";
     public static final String VOLUME = "volume";
     public static final String LAST_PRICE = "lastPrice";
+    public static final String TRANSACTION_PRICE_KOR = "백만";
 }
