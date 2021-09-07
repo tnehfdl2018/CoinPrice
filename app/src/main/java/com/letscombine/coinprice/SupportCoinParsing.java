@@ -102,16 +102,27 @@ public class SupportCoinParsing {
 
 //    public static ArrayList<CoinDetailVO> parsingCoinDetail(String exchange, String data) {
     public static CoinDetailVO parsingCoinDetail(String exchange, String data, String selectCoin) {
+        // 파싱에 사용하는 JsonObject, JsonArray
+        JSONObject coinJson = null;
         JSONObject parsingObject = null;
+        JSONArray parsingArray = null;
+
+        // 파싱한 데이터를 저장할 String변수
         String coinPrice = null;
         String coinTransactionAmount = null;
+
+        // 연산을 위한 BigDecimal 변수
         BigDecimal bCoinPrice = null;
         BigDecimal bCoinTransactionAmount = null;
-        JSONArray parsingArray = null;
+
+        // 소수점삭제를 위한 int 변수
         int iCoinTransactionAmount = 0;
+
         if (data != null) {
             try {
-                JSONObject coinJson = new JSONObject(data);
+                if (!exchange.equals(StringDefine.UPBIT)) {
+                    coinJson = new JSONObject(data);
+                }
 
                 switch (exchange) {
                     case StringDefine.COINONE: // coinOne
@@ -137,12 +148,20 @@ public class SupportCoinParsing {
                     case StringDefine.BITHUMB: // bithumb
                         return null;
                     case StringDefine.UPBIT: // upbit
-                        return null;
-                    case StringDefine.BINANCE: // binance
-                        JSONArray jsonArray = coinJson.getJSONArray(StringDefine.DATA);
+                        parsingArray = new JSONArray(data);
 
-                        for (int dInx = 0; dInx < jsonArray.length(); dInx++) {
-                            parsingObject = new JSONObject(jsonArray.getString(dInx));
+                        parsingObject = parsingArray.getJSONObject(0);
+
+                        bCoinPrice = new BigDecimal(parsingObject.getString(StringDefine.TRADE_PRICE));
+                        bCoinTransactionAmount = new BigDecimal(parsingObject.getString(StringDefine.ACC_TRADE_VOLUME_24H));
+                        iCoinTransactionAmount = bCoinTransactionAmount.intValue();
+                        return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), String.valueOf(iCoinTransactionAmount));
+
+                    case StringDefine.BINANCE: // binance
+                        parsingArray = coinJson.getJSONArray(StringDefine.DATA);
+
+                        for (int dInx = 0; dInx < parsingArray.length(); dInx++) {
+                            parsingObject = new JSONObject(parsingArray.getString(dInx));
 
                             if (selectCoin.equals(parsingObject.getString(StringDefine.SYMBOL))) {
                                 coinPrice = parsingObject.getString(StringDefine.LAST_PRICE);

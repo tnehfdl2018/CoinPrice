@@ -213,6 +213,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BITHUMB, utils.callOkHttp(AddressDefine.BITHUMB_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.UPBIT:
+                        String[] coinAndFair = sSelectCoin.split("/");
+                        hashMap.put(StringDefine.MARKETS, coinAndFair[1] + "-" + coinAndFair[0]);
                         coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.UPBIT, utils.callOkHttp(AddressDefine.UPBIT_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.BINANCE:
