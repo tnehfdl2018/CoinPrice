@@ -16,7 +16,7 @@ public class AddressDefine {
     public static String BITHUMB_COIN_DETAIL = "https://api.bithumb.com/public/ticker/";
     public static String MEXC_COIN_DETAIL = "https://www.mexc.com/open/api/v2/market/ticker";
     public static String UPBIT_COIN_DETAIL = "https://api.upbit.com/v1/ticker?markets=";
-    public static String BINANCE_COIN_DETAIL = "https://api.binance.com/api/v3/ticher/24hr";
+    public static String BINANCE_COIN_DETAIL = "https://api.binance.com/api/v3/ticker/24hr";
     public static String HUOBI_COIN_DETAIL = "https://api-cloud.huobi.co.kr/market/detail?symbol=";
     public static String GATEIO_COIN_DETAIL = "";
 }
