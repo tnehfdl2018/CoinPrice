@@ -204,25 +204,25 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     case StringDefine.COINONE:
                         String[] coinName = sSelectCoin.split("/");
                         hashMap.put(StringDefine.CURRENCY, coinName[0]);
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.COINONE, utils.callOkHttp(AddressDefine.COINONE_COIN_DETAIL, hashMap));
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.COINONE, utils.callOkHttp(AddressDefine.COINONE_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.MEXC:
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.MEXC, utils.callOkHttp(AddressDefine.MEXC_COIN_DETAIL, hashMap));
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.MEXC, utils.callOkHttp(AddressDefine.MEXC_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.BITHUMB:
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BITHUMB, utils.callOkHttp(AddressDefine.BITHUMB_COIN_DETAIL, hashMap));
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BITHUMB, utils.callOkHttp(AddressDefine.BITHUMB_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.UPBIT:
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.UPBIT, utils.callOkHttp(AddressDefine.UPBIT_COIN_DETAIL, hashMap));
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.UPBIT, utils.callOkHttp(AddressDefine.UPBIT_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.BINANCE:
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BINANCE, utils.callOkHttp(AddressDefine.BINANCE_COIN_DETAIL, hashMap));
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BINANCE, utils.callOkHttp(AddressDefine.BINANCE_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.HUOBI:
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.HUOBI, utils.callOkHttp(AddressDefine.HUOBI_COIN_DETAIL, hashMap));
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.HUOBI, utils.callOkHttp(AddressDefine.HUOBI_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.GATEIO:
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.GATEIO, utils.callOkHttp(AddressDefine.GATEIO_COIN_DETAIL, hashMap));
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.GATEIO, utils.callOkHttp(AddressDefine.GATEIO_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                 }
 

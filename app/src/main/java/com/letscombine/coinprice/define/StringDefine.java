@@ -29,4 +29,5 @@ public class StringDefine {
     public static final String CURRENCY = "currency"; // 코인원 파싱에도 사용함
     public static final String LAST = "last";
     public static final String VOLUME = "volume";
+    public static final String LAST_PRICE = "lastPrice";
 }

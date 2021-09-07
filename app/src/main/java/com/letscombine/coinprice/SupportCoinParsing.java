@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -100,20 +101,58 @@ public class SupportCoinParsing {
     }
 
 //    public static ArrayList<CoinDetailVO> parsingCoinDetail(String exchange, String data) {
-    public static CoinDetailVO parsingCoinDetail(String exchange, String data) {
+    public static CoinDetailVO parsingCoinDetail(String exchange, String data, String selectCoin) {
+        JSONObject parsingObject = null;
+        String coinPrice = null;
+        String coinTransactionAmount = null;
+        BigDecimal bCoinPrice = null;
+        BigDecimal bCoinTransactionAmount = null;
+        if (data != null) {
+            try {
+                JSONObject coinJson = new JSONObject(data);
 
-        ArrayList<CoinDetailVO> coinDetail = new ArrayList<>();
+                switch (exchange) {
+                    case StringDefine.COINONE: // coinOne
+//                        String coinCurrency = coinJson.getString(StringDefine.CURRENCY).toUpperCase() + "/" + StringDefine.KRW;
 
-        try {
-            JSONObject coinJson = new JSONObject(data);
+                        bCoinPrice = new BigDecimal(coinJson.getString(StringDefine.LAST));
+                        bCoinTransactionAmount = bCoinPrice.multiply(new BigDecimal(coinJson.getString(StringDefine.VOLUME)));
+                        int iCoinTransactionAmount = bCoinTransactionAmount.intValue();
 
-            String coinCurrency = coinJson.getString(StringDefine.CURRENCY);
-            String coinLastPrice = coinJson.getString(StringDefine.LAST);
-            String coinVolume = coinJson.getString(StringDefine.VOLUME);
-            return new CoinDetailVO(exchange, coinCurrency, coinLastPrice, coinVolume);
+                        return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), String.valueOf(iCoinTransactionAmount));
+                    case StringDefine.MEXC: // mexc
 
-        } catch (JSONException e) {
-            e.printStackTrace();
+                        return null;
+                    case StringDefine.BITHUMB: // bithumb
+                        return null;
+                    case StringDefine.UPBIT: // upbit
+                        return null;
+                    case StringDefine.BINANCE: // binance
+                        JSONArray jsonArray = coinJson.getJSONArray(StringDefine.DATA);
+
+                        for (int dInx = 0; dInx < jsonArray.length(); dInx++) {
+                            parsingObject = new JSONObject(jsonArray.getString(dInx));
+
+                            if (selectCoin.equals(parsingObject.getString(StringDefine.SYMBOL))) {
+                                coinPrice = parsingObject.getString(StringDefine.LAST_PRICE);
+                                coinTransactionAmount = parsingObject.getString(StringDefine.VOLUME);
+                                return new CoinDetailVO(exchange, selectCoin, coinPrice, coinTransactionAmount);
+                            }
+                        }
+
+                        return null;
+                    case StringDefine.HUOBI: // huobi
+                        return null;
+                    case StringDefine.GATEIO: // gate/io
+                        return null;
+                    default:
+                        return null;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else {
             return null;
         }
     }
