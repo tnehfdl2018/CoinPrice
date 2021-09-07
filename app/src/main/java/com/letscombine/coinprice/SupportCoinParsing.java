@@ -126,13 +126,12 @@ public class SupportCoinParsing {
 
                 switch (exchange) {
                     case StringDefine.COINONE: // coinOne
-//                        String coinCurrency = coinJson.getString(StringDefine.CURRENCY).toUpperCase() + "/" + StringDefine.KRW;
-
                         bCoinPrice = new BigDecimal(coinJson.getString(StringDefine.LAST));
                         bCoinTransactionAmount = bCoinPrice.multiply(new BigDecimal(coinJson.getString(StringDefine.VOLUME)));
                         iCoinTransactionAmount = bCoinTransactionAmount.intValue();
 
                         return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), String.valueOf(iCoinTransactionAmount));
+
                     case StringDefine.MEXC: // mexc
                         parsingArray = (JSONArray) coinJson.get(StringDefine.DATA);
                         for (int dInx = 0; dInx < parsingArray.length(); dInx++) {
@@ -145,8 +144,13 @@ public class SupportCoinParsing {
                                 return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), String.valueOf(iCoinTransactionAmount));
                             }
                         }
+
                     case StringDefine.BITHUMB: // bithumb
-                        return null;
+                        parsingObject = coinJson.getJSONObject(StringDefine.DATA);
+                        bCoinTransactionAmount = new BigDecimal(parsingObject.getString(StringDefine.ACC_TRADE_VALUE_24H));
+                        iCoinTransactionAmount = bCoinTransactionAmount.intValue();
+                        return new CoinDetailVO(exchange, selectCoin, parsingObject.getString(StringDefine.CLOSING_PRICE), String.valueOf(iCoinTransactionAmount));
+
                     case StringDefine.UPBIT: // upbit
                         parsingArray = new JSONArray(data);
 
@@ -170,14 +174,17 @@ public class SupportCoinParsing {
                             }
                         }
                         return null;
+
                     case StringDefine.HUOBI: // huobi
                         JSONObject tickJsonObject = coinJson.getJSONObject(StringDefine.TICK);
                         bCoinPrice = new BigDecimal(tickJsonObject.getString(StringDefine.CLOSE));
                         bCoinTransactionAmount = bCoinPrice.multiply(new BigDecimal(tickJsonObject.getString(StringDefine.AMOUNT)));
                         iCoinTransactionAmount = bCoinTransactionAmount.intValue();
                         return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), String.valueOf(iCoinTransactionAmount));
+
                     case StringDefine.GATEIO: // gate/io
                         return null;
+
                     default:
                         return null;
                 }

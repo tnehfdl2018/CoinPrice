@@ -200,21 +200,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             } else {
                 // 코인 상세 조회
+                String[] searchCoin = null;
+
                 switch (sSelectExchange) {
                     case StringDefine.COINONE:
-                        String[] coinName = sSelectCoin.split("/");
-                        hashMap.put(StringDefine.CURRENCY, coinName[0]);
+                        searchCoin = sSelectCoin.split("/");
+                        hashMap.put(StringDefine.CURRENCY, searchCoin[0]);
                         coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.COINONE, utils.callOkHttp(AddressDefine.COINONE_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.MEXC:
                         coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.MEXC, utils.callOkHttp(AddressDefine.MEXC_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.BITHUMB:
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BITHUMB, utils.callOkHttp(AddressDefine.BITHUMB_COIN_DETAIL, hashMap), sSelectCoin);
+                        searchCoin = sSelectCoin.split("/");
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BITHUMB, utils.callOkHttp(AddressDefine.BITHUMB_COIN_DETAIL + searchCoin[0] + "_" + searchCoin[1], hashMap), sSelectCoin);
                         break;
                     case StringDefine.UPBIT:
-                        String[] coinAndFair = sSelectCoin.split("/");
-                        hashMap.put(StringDefine.MARKETS, coinAndFair[1] + "-" + coinAndFair[0]);
+                        searchCoin = sSelectCoin.split("/");
+                        hashMap.put(StringDefine.MARKETS, searchCoin[1] + "-" + searchCoin[0]);
                         coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.UPBIT, utils.callOkHttp(AddressDefine.UPBIT_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.BINANCE:

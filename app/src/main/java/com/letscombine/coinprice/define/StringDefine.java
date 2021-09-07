@@ -35,6 +35,8 @@ public class StringDefine {
     public static final String CLOSE = "close";
     public static final String MARKETS = "markets";
     public static final String ACC_TRADE_VOLUME_24H = "acc_trade_volume_24h";
+    public static final String ACC_TRADE_VALUE_24H = "acc_trade_value_24H";
+    public static final String CLOSING_PRICE = "closing_price";
     public static final String TRADE_PRICE = "trade_price";
     public static final String TRANSACTION_PRICE_KOR = "백만";
 
