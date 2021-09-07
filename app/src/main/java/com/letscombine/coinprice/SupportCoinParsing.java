@@ -99,20 +99,22 @@ public class SupportCoinParsing {
         }
     }
 
-    public static HashMap<String, String> parsingCoinDetail(String data) {
-        HashMap<String, String> coinDetail = new HashMap<>();
+//    public static ArrayList<CoinDetailVO> parsingCoinDetail(String exchange, String data) {
+    public static CoinDetailVO parsingCoinDetail(String exchange, String data) {
+
+        ArrayList<CoinDetailVO> coinDetail = new ArrayList<>();
+
         try {
             JSONObject coinJson = new JSONObject(data);
 
             String coinCurrency = coinJson.getString(StringDefine.CURRENCY);
             String coinLastPrice = coinJson.getString(StringDefine.LAST);
             String coinVolume = coinJson.getString(StringDefine.VOLUME);
+            return new CoinDetailVO(exchange, coinCurrency, coinLastPrice, coinVolume);
 
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-
-
-        return coinDetail;
     }
 }

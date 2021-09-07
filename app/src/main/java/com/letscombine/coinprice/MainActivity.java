@@ -1,6 +1,7 @@
 package com.letscombine.coinprice;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Spinner spnSelectCoin = null;
 
     private RecyclerView recyclerViewGetRequestData = null;
+
+    private CoinListAdapter coinListAdapter = new CoinListAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +138,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         private String sSelectExchange = null;
         private String sSelectCoin = null;
         private ArrayList<String> coinList = new ArrayList<>();
-        private HashMap<String, String> coinDetail = new HashMap<>();
+//        private ArrayList<CoinDetailVO> coinDetail = new ArrayList<>();
+        private CoinDetailVO coinDetail = null;
         private Boolean callApiKinds = true;
 
         // 선택한 코인 세팅
@@ -200,25 +204,25 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     case StringDefine.COINONE:
                         String[] coinName = sSelectCoin.split("/");
                         hashMap.put(StringDefine.CURRENCY, coinName[0]);
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(utils.callOkHttp(AddressDefine.COINONE_COIN_DETAIL, hashMap));
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.COINONE, utils.callOkHttp(AddressDefine.COINONE_COIN_DETAIL, hashMap));
                         break;
                     case StringDefine.MEXC:
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(utils.callOkHttp(AddressDefine.MEXC_COIN_DETAIL, hashMap));
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.MEXC, utils.callOkHttp(AddressDefine.MEXC_COIN_DETAIL, hashMap));
                         break;
                     case StringDefine.BITHUMB:
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(utils.callOkHttp(AddressDefine.BITHUMB_COIN_DETAIL, hashMap));
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BITHUMB, utils.callOkHttp(AddressDefine.BITHUMB_COIN_DETAIL, hashMap));
                         break;
                     case StringDefine.UPBIT:
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(utils.callOkHttp(AddressDefine.UPBIT_COIN_DETAIL, hashMap));
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.UPBIT, utils.callOkHttp(AddressDefine.UPBIT_COIN_DETAIL, hashMap));
                         break;
                     case StringDefine.BINANCE:
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(utils.callOkHttp(AddressDefine.BINANCE_COIN_DETAIL, hashMap));
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BINANCE, utils.callOkHttp(AddressDefine.BINANCE_COIN_DETAIL, hashMap));
                         break;
                     case StringDefine.HUOBI:
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(utils.callOkHttp(AddressDefine.HUOBI_COIN_DETAIL, hashMap));
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.HUOBI, utils.callOkHttp(AddressDefine.HUOBI_COIN_DETAIL, hashMap));
                         break;
                     case StringDefine.GATEIO:
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(utils.callOkHttp(AddressDefine.GATEIO_COIN_DETAIL, hashMap));
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.GATEIO, utils.callOkHttp(AddressDefine.GATEIO_COIN_DETAIL, hashMap));
                         break;
                 }
 
@@ -226,10 +230,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        
+
+                        coinListAdapter.setItem(coinDetail);
+
+                        recyclerViewGetRequestData.setLayoutManager(new LinearLayoutManager(mContext));
+                        recyclerViewGetRequestData.setAdapter(coinListAdapter);
                     }
                 });
             }
+            callApiKinds = true;
         }
     }
 }
