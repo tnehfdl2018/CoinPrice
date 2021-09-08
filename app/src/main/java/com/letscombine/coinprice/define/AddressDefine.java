@@ -18,5 +18,5 @@ public class AddressDefine {
     public static String UPBIT_COIN_DETAIL = "https://api.upbit.com/v1/ticker";
     public static String BINANCE_COIN_DETAIL = "https://api.binance.com/api/v3/ticker/24hr";
     public static String HUOBI_COIN_DETAIL = "https://api-cloud.huobi.co.kr/market/detail";
-    public static String GATEIO_COIN_DETAIL = "";
+    public static String GATEIO_COIN_DETAIL = "https://api.gateio.ws/api/v4/spot/tickers";
 }
