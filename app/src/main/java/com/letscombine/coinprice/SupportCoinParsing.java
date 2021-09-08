@@ -130,7 +130,7 @@ public class SupportCoinParsing {
 
         if (data != null) {
             try {
-                if (!exchange.equals(StringDefine.UPBIT)) {
+                if (!exchange.equals(StringDefine.UPBIT) && !exchange.equals(StringDefine.BINANCE)) {
                     coinJson = new JSONObject(data);
                 }
 
@@ -172,7 +172,7 @@ public class SupportCoinParsing {
                         return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), String.valueOf(iCoinTransactionAmount));
 
                     case StringDefine.BINANCE: // binance
-                        parsingArray = coinJson.getJSONArray(StringDefine.DATA);
+                        parsingArray = new JSONArray(data);
 
                         for (int dInx = 0; dInx < parsingArray.length(); dInx++) {
                             parsingObject = new JSONObject(parsingArray.getString(dInx));

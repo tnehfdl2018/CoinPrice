@@ -206,6 +206,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.UPBIT, utils.callOkHttp(AddressDefine.UPBIT_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.BINANCE:
+                        String[] fair = sSelectCoin.split("/");
+                        sSelectCoin = fair[0] + fair[1];
                         coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BINANCE, utils.callOkHttp(AddressDefine.BINANCE_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.HUOBI:
@@ -234,11 +236,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                         recyclerViewGetRequestData.setLayoutManager(new LinearLayoutManager(mContext));
                         recyclerViewGetRequestData.setAdapter(coinListAdapter);
+
+                        callApiKinds = true;
                     }
                 }
             });
-
-            callApiKinds = true;
         }
     }
 }
