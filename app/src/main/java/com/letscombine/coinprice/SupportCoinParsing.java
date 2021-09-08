@@ -130,7 +130,7 @@ public class SupportCoinParsing {
 
         if (data != null) {
             try {
-                if (!exchange.equals(StringDefine.UPBIT) && !exchange.equals(StringDefine.BINANCE)) {
+                if (!exchange.equals(StringDefine.UPBIT) && !exchange.equals(StringDefine.BINANCE) && !exchange.equals(StringDefine.GATEIO)) {
                     coinJson = new JSONObject(data);
                 }
 
@@ -192,7 +192,18 @@ public class SupportCoinParsing {
                         iCoinTransactionAmount = bCoinTransactionAmount.intValue();
                         return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), String.valueOf(iCoinTransactionAmount));
 
-                    case StringDefine.GATEIO: // gate/io
+                    case StringDefine.GATEIO: // gate.io
+                        parsingArray = new JSONArray(data);
+
+                        for (int dInx = 0; dInx < parsingArray.length(); dInx++) {
+                            parsingObject = new JSONObject(parsingArray.getString(dInx));
+
+                            if (selectCoin.equals(parsingObject.getString(StringDefine.CURRENCY_PAIR))) {
+                                coinPrice = parsingObject.getString(StringDefine.LAST);
+                                coinTransactionAmount = parsingObject.getString(StringDefine.BASE_VOLUME);
+                                return new CoinDetailVO(exchange, selectCoin, coinPrice, coinTransactionAmount);
+                            }
+                        }
                         return null;
 
                     default:

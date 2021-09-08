@@ -51,9 +51,6 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ViewHo
         this.coinListArray.add(coinListArray);
     }
 
-//    public void setItem(ArrayList<CoinDetailVO> coinListArray) {
-//        this.coinListArray = coinListArray;
-//    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -71,14 +68,13 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ViewHo
             txtPresentPrice = itemView.findViewById(R.id.txtPresentPrice);
             txtVolume = itemView.findViewById(R.id.txtVolume);
             imgRemoveData = itemView.findViewById(R.id.imgRemoveData);
-            imgRemoveData.setOnClickListener(onClickListener);
+            imgRemoveData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    coinListArray.remove(getAdapterPosition());
+                    notifyDataSetChanged();
+                }
+            });
         }
-
-        private View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(itemView.getContext(), "삭제", Toast.LENGTH_SHORT).show();
-            }
-        };
     }
 }

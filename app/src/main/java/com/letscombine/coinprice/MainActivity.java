@@ -206,8 +206,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.UPBIT, utils.callOkHttp(AddressDefine.UPBIT_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.BINANCE:
-                        String[] fair = sSelectCoin.split("/");
-                        sSelectCoin = fair[0] + fair[1];
+                        String[] pair = sSelectCoin.split("/");
+                        sSelectCoin = pair[0] + pair[1];
                         coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BINANCE, utils.callOkHttp(AddressDefine.BINANCE_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.HUOBI:
@@ -215,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.HUOBI, utils.callOkHttp(AddressDefine.HUOBI_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                     case StringDefine.GATEIO:
+                        sSelectCoin = sSelectCoin.replace("/", "_");
                         coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.GATEIO, utils.callOkHttp(AddressDefine.GATEIO_COIN_DETAIL, hashMap), sSelectCoin);
                         break;
                 }

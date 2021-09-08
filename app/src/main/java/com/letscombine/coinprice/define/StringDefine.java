@@ -21,6 +21,7 @@ public class StringDefine {
     public static final String TRADING = "TRADING";
     public static final String MARKET = "market";
     public static final String ID = "id";
+    public static final String CURRENCY_PAIR = "currency_pair";
 
     // 코인 + 페어
     public static final String KRW = "KRW";
@@ -33,6 +34,7 @@ public class StringDefine {
     public static final String CURRENCY = "currency"; // 코인원 파싱에도 사용함
     public static final String LAST = "last";
     public static final String VOLUME = "volume";
+    public static final String BASE_VOLUME = "base_volume";
     public static final String LAST_PRICE = "lastPrice";
     public static final String TICK = "tick";
     public static final String AMOUNT = "amount";
