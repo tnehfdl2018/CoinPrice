@@ -82,11 +82,21 @@ public class SupportCoinParsing {
                         parsingArray = (JSONArray) nonParsingObject.get(StringDefine.SYMBOLS);
                         for (int dInx = 0; dInx < parsingArray.length(); dInx++) {
                             parsingObject = new JSONObject(parsingArray.getString(dInx));
+                            String symbol = parsingObject.getString(StringDefine.SYMBOL);
                             if (StringDefine.TRADING.equals(parsingObject.getString(StringDefine.STATUS))) {
-                                parsingDataList.add(parsingObject.getString(StringDefine.SYMBOL).toUpperCase());
+                                if (symbol.endsWith(StringDefine.BTC)){
+                                    if (symbol.startsWith(StringDefine.BTCST)) {
+                                        parsingDataList.add(symbol.substring(0, symbol.lastIndexOf(StringDefine.BTC)) + "/" + symbol.substring(symbol.lastIndexOf(StringDefine.BTC)));
+                                    } else {
+                                        parsingDataList.add(symbol.substring(0, symbol.indexOf(StringDefine.BTC)) + "/" + symbol.substring(symbol.indexOf(StringDefine.BTC)));
+                                    }
+                                } else if (symbol.endsWith(StringDefine.USDT)) {
+                                    parsingDataList.add(symbol.substring(0, symbol.indexOf(StringDefine.USDT)) + "/" + symbol.substring(symbol.indexOf(StringDefine.USDT)));
+                                } else if (symbol.endsWith(StringDefine.ETH)) {
+                                    parsingDataList.add(symbol.substring(0, symbol.indexOf(StringDefine.ETH)) + "/" + symbol.substring(symbol.indexOf(StringDefine.ETH)));
+                                }
                             }
                         }
-                        break;
                 }
                 Collections.sort(parsingDataList);
                 return parsingDataList;

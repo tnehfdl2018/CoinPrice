@@ -24,7 +24,11 @@ public class StringDefine {
 
     // 코인 + 페어
     public static final String KRW = "KRW";
-    
+    public static final String BTC = "BTC";
+    public static final String BTCST = "BTCST";
+    public static final String USDT = "USDT";
+    public static final String ETH = "ETH";
+
     // 코인 상세 파싱
     public static final String CURRENCY = "currency"; // 코인원 파싱에도 사용함
     public static final String LAST = "last";
