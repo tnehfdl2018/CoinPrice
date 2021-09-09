@@ -30,12 +30,21 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ViewHo
             holder.txtCoinName.setText(coinListArray.get(position).getCoinName());
             holder.txtPresentPrice.setText(coinListArray.get(position).getCoinPrice());
 
-            // 거래대금이 백만이상이면 백만자리 아래를 절사하고 "백만"으로 표기
-            if (coinListArray.get(position).getCoinTransactionAmount().length() > 6) {
-                coinListArray.get(position).setCoinTransactionAmount(coinListArray.get(position).getCoinTransactionAmount().substring(0, coinListArray.get(position).getCoinTransactionAmount().length() - 6) + StringDefine.TRANSACTION_PRICE_KOR);
+            String sCoinTransactionAmount = coinListArray.get(position).getCoinTransactionAmount();
+
+            // 거래대금에 소수점이 있으면 소수점 위의 자리만 추린다.
+            if (sCoinTransactionAmount.indexOf(".") != -1) {
+                sCoinTransactionAmount = sCoinTransactionAmount.replace('.', '/');
+                String[] stringList = sCoinTransactionAmount.split("/");
+                sCoinTransactionAmount = stringList[0];
             }
 
-            holder.txtVolume.setText(coinListArray.get(position).getCoinTransactionAmount());
+            // 거래대금이 백만이상이면 백만자리 아래를 절사하고 "백만"으로 표기
+            if (sCoinTransactionAmount.length() > 6) {
+                sCoinTransactionAmount = sCoinTransactionAmount.substring(0, sCoinTransactionAmount.length() - 6) + StringDefine.TRANSACTION_PRICE_KOR;
+            }
+
+            holder.txtVolume.setText(sCoinTransactionAmount);
         } else {
             Toast.makeText(holder.itemView.getContext(), "뭔가 잘못 됬음", Toast.LENGTH_SHORT).show();
         }

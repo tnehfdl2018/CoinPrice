@@ -1,7 +1,6 @@
 package com.letscombine.coinprice;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.letscombine.coinprice.define.StringDefine;
 
@@ -12,7 +11,6 @@ import org.json.JSONObject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 
 public class SupportCoinParsing {
@@ -110,23 +108,15 @@ public class SupportCoinParsing {
         }
     }
 
-//    public static ArrayList<CoinDetailVO> parsingCoinDetail(String exchange, String data) {
     public static CoinDetailVO parsingCoinDetail(String exchange, String data, String selectCoin) {
         // 파싱에 사용하는 JsonObject, JsonArray
         JSONObject coinJson = null;
         JSONObject parsingObject = null;
         JSONArray parsingArray = null;
 
-        // 파싱한 데이터를 저장할 String변수
-        String coinPrice = null;
-        String coinTransactionAmount = null;
-
         // 연산을 위한 BigDecimal 변수
         BigDecimal bCoinPrice = null;
         BigDecimal bCoinTransactionAmount = null;
-
-        // 소수점삭제를 위한 int 변수
-        int iCoinTransactionAmount = 0;
 
         if (data != null) {
             try {
@@ -138,11 +128,10 @@ public class SupportCoinParsing {
                     case StringDefine.COINONE: // coinOne
                         bCoinPrice = new BigDecimal(coinJson.getString(StringDefine.LAST));
                         bCoinTransactionAmount = bCoinPrice.multiply(new BigDecimal(coinJson.getString(StringDefine.VOLUME)));
-                        iCoinTransactionAmount = bCoinTransactionAmount.intValue();
-
-                        return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), String.valueOf(iCoinTransactionAmount));
+                        return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), bCoinTransactionAmount.toString());
 
                     case StringDefine.MEXC: // mexc
+                        // 소수점 수정
                         parsingArray = (JSONArray) coinJson.get(StringDefine.DATA);
                         for (int dInx = 0; dInx < parsingArray.length(); dInx++) {
                             parsingObject = new JSONObject(parsingArray.getString(dInx));
@@ -150,26 +139,19 @@ public class SupportCoinParsing {
                             if (selectCoin.equals(parsingObject.getString(StringDefine.SYMBOL).replace("_", "/"))) {
                                 bCoinPrice = new BigDecimal(parsingObject.getString(StringDefine.LAST));
                                 bCoinTransactionAmount = bCoinPrice.multiply(new BigDecimal(parsingObject.getString(StringDefine.VOLUME)));
-                                iCoinTransactionAmount = bCoinTransactionAmount.intValue();
-                                return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), String.valueOf(iCoinTransactionAmount));
+                                return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), bCoinTransactionAmount.toString());
                             }
                         }
 
                     case StringDefine.BITHUMB: // bithumb
                         parsingObject = coinJson.getJSONObject(StringDefine.DATA);
-                        bCoinTransactionAmount = new BigDecimal(parsingObject.getString(StringDefine.ACC_TRADE_VALUE_24H));
-                        iCoinTransactionAmount = bCoinTransactionAmount.intValue();
-                        return new CoinDetailVO(exchange, selectCoin, parsingObject.getString(StringDefine.CLOSING_PRICE), String.valueOf(iCoinTransactionAmount));
+                        return new CoinDetailVO(exchange, selectCoin, parsingObject.getString(StringDefine.CLOSING_PRICE), parsingObject.getString(StringDefine.ACC_TRADE_VALUE_24H));
 
                     case StringDefine.UPBIT: // upbit
                         parsingArray = new JSONArray(data);
-
                         parsingObject = parsingArray.getJSONObject(0);
 
-                        bCoinPrice = new BigDecimal(parsingObject.getString(StringDefine.TRADE_PRICE));
-                        bCoinTransactionAmount = new BigDecimal(parsingObject.getString(StringDefine.ACC_TRADE_VOLUME_24H));
-                        iCoinTransactionAmount = bCoinTransactionAmount.intValue();
-                        return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), String.valueOf(iCoinTransactionAmount));
+                        return new CoinDetailVO(exchange, selectCoin, parsingObject.getString(StringDefine.TRADE_PRICE), parsingObject.getString(StringDefine.ACC_TRADE_VOLUME_24H));
 
                     case StringDefine.BINANCE: // binance
                         parsingArray = new JSONArray(data);
@@ -178,9 +160,7 @@ public class SupportCoinParsing {
                             parsingObject = new JSONObject(parsingArray.getString(dInx));
 
                             if (selectCoin.equals(parsingObject.getString(StringDefine.SYMBOL))) {
-                                coinPrice = parsingObject.getString(StringDefine.LAST_PRICE);
-                                coinTransactionAmount = parsingObject.getString(StringDefine.VOLUME);
-                                return new CoinDetailVO(exchange, selectCoin, coinPrice, coinTransactionAmount);
+                                return new CoinDetailVO(exchange, selectCoin, parsingObject.getString(StringDefine.LAST_PRICE), parsingObject.getString(StringDefine.VOLUME));
                             }
                         }
                         return null;
@@ -189,8 +169,7 @@ public class SupportCoinParsing {
                         JSONObject tickJsonObject = coinJson.getJSONObject(StringDefine.TICK);
                         bCoinPrice = new BigDecimal(tickJsonObject.getString(StringDefine.CLOSE));
                         bCoinTransactionAmount = bCoinPrice.multiply(new BigDecimal(tickJsonObject.getString(StringDefine.AMOUNT)));
-                        iCoinTransactionAmount = bCoinTransactionAmount.intValue();
-                        return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), String.valueOf(iCoinTransactionAmount));
+                        return new CoinDetailVO(exchange, selectCoin, bCoinPrice.toString(), bCoinTransactionAmount.toString());
 
                     case StringDefine.GATEIO: // gate.io
                         parsingArray = new JSONArray(data);
@@ -199,9 +178,7 @@ public class SupportCoinParsing {
                             parsingObject = new JSONObject(parsingArray.getString(dInx));
 
                             if (selectCoin.equals(parsingObject.getString(StringDefine.CURRENCY_PAIR))) {
-                                coinPrice = parsingObject.getString(StringDefine.LAST);
-                                coinTransactionAmount = parsingObject.getString(StringDefine.BASE_VOLUME);
-                                return new CoinDetailVO(exchange, selectCoin, coinPrice, coinTransactionAmount);
+                                return new CoinDetailVO(exchange, selectCoin, parsingObject.getString(StringDefine.LAST), parsingObject.getString(StringDefine.BASE_VOLUME));
                             }
                         }
                         return null;
