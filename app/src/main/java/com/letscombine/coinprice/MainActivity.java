@@ -186,37 +186,42 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             } else {
                 // 코인 상세 조회
                 String[] searchCoin = null;
+                searchCoin = sSelectCoin.split("/");
+                String sStandardPrice = null;
+
+                if (searchCoin[1].equals(StringDefine.BTC)) {
+                    hashMap.put(StringDefine.MARKETS, StringDefine.KRW + "-" + searchCoin[1]);
+                    sStandardPrice = utils.callOkHttp(AddressDefine.UPBIT_COIN_DETAIL, hashMap);
+                } else if (searchCoin[1].equals(StringDefine.USDT)) {
+
+                }
 
                 switch (sSelectExchange) {
                     case StringDefine.COINONE:
-                        searchCoin = sSelectCoin.split("/");
                         hashMap.put(StringDefine.CURRENCY, searchCoin[0]);
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.COINONE, utils.callOkHttp(AddressDefine.COINONE_COIN_DETAIL, hashMap), sSelectCoin);
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.COINONE, utils.callOkHttp(AddressDefine.COINONE_COIN_DETAIL, hashMap), sSelectCoin, sStandardPrice);
                         break;
                     case StringDefine.MEXC:
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.MEXC, utils.callOkHttp(AddressDefine.MEXC_COIN_DETAIL, hashMap), sSelectCoin);
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.MEXC, utils.callOkHttp(AddressDefine.MEXC_COIN_DETAIL, hashMap), sSelectCoin, sStandardPrice);
                         break;
                     case StringDefine.BITHUMB:
-                        searchCoin = sSelectCoin.split("/");
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BITHUMB, utils.callOkHttp(AddressDefine.BITHUMB_COIN_DETAIL + searchCoin[0] + "_" + searchCoin[1], hashMap), sSelectCoin);
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BITHUMB, utils.callOkHttp(AddressDefine.BITHUMB_COIN_DETAIL + searchCoin[0] + "_" + searchCoin[1], hashMap), sSelectCoin, sStandardPrice);
                         break;
                     case StringDefine.UPBIT:
-                        searchCoin = sSelectCoin.split("/");
                         hashMap.put(StringDefine.MARKETS, searchCoin[1] + "-" + searchCoin[0]);
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.UPBIT, utils.callOkHttp(AddressDefine.UPBIT_COIN_DETAIL, hashMap), sSelectCoin);
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.UPBIT, utils.callOkHttp(AddressDefine.UPBIT_COIN_DETAIL, hashMap), sSelectCoin, sStandardPrice);
                         break;
                     case StringDefine.BINANCE:
-                        String[] pair = sSelectCoin.split("/");
-                        sSelectCoin = pair[0] + pair[1];
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BINANCE, utils.callOkHttp(AddressDefine.BINANCE_COIN_DETAIL, hashMap), sSelectCoin);
+                        sSelectCoin = searchCoin[0] + searchCoin[1];
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.BINANCE, utils.callOkHttp(AddressDefine.BINANCE_COIN_DETAIL, hashMap), sSelectCoin, sStandardPrice);
                         break;
                     case StringDefine.HUOBI:
                         hashMap.put(StringDefine.SYMBOL.toLowerCase(), sSelectCoin.replace("/", "").toLowerCase());
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.HUOBI, utils.callOkHttp(AddressDefine.HUOBI_COIN_DETAIL, hashMap), sSelectCoin);
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.HUOBI, utils.callOkHttp(AddressDefine.HUOBI_COIN_DETAIL, hashMap), sSelectCoin, sStandardPrice);
                         break;
                     case StringDefine.GATEIO:
                         sSelectCoin = sSelectCoin.replace("/", "_");
-                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.GATEIO, utils.callOkHttp(AddressDefine.GATEIO_COIN_DETAIL, hashMap), sSelectCoin);
+                        coinDetail = SupportCoinParsing.parsingCoinDetail(StringDefine.GATEIO, utils.callOkHttp(AddressDefine.GATEIO_COIN_DETAIL, hashMap), sSelectCoin, sStandardPrice);
                         break;
                 }
             }
