@@ -108,7 +108,7 @@ public class SupportCoinParsing {
         }
     }
 
-    public static CoinDetailVO parsingCoinDetail(String exchange, String data, String selectCoin) {
+    public static CoinDetailVO parsingCoinDetail(String exchange, String data, String selectCoin, String sStandardPrice) {
         // 파싱에 사용하는 JsonObject, JsonArray
         JSONObject coinJson = null;
         JSONObject parsingObject = null;
@@ -117,9 +117,21 @@ public class SupportCoinParsing {
         // 연산을 위한 BigDecimal 변수
         BigDecimal bCoinPrice = null;
         BigDecimal bCoinTransactionAmount = null;
+        BigDecimal bStandardPrice = null;
+
+        
 
         if (data != null) {
             try {
+                // 기준가 파싱
+                if (sStandardPrice != null) {
+                    parsingArray = new JSONArray(sStandardPrice);
+                    parsingObject = parsingArray.getJSONObject(0);
+                    bStandardPrice = new BigDecimal(parsingObject.getString(StringDefine.TRADE_PRICE));
+                    parsingArray = null;
+                }
+                
+                // upbit, binance, gate.io는 JsonArray형태로 response를 줌 
                 if (!exchange.equals(StringDefine.UPBIT) && !exchange.equals(StringDefine.BINANCE) && !exchange.equals(StringDefine.GATEIO)) {
                     coinJson = new JSONObject(data);
                 }
